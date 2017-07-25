@@ -41,7 +41,30 @@ class database:
 
     def connecttodb(self):
         try:
-            conn = psycopg2.connect(self.__connectstring)
+            self.__conn = psycopg2.connect(self.__connectstring)
             print("Connection Successful")
-        except:
-            print("I am unable to connect to that database")
+        except Exception as e:
+            print(e)
+
+    def setsql(self, selectstring):
+        self.__sql = selectstring
+
+    def executesql(self):
+        try:
+            cursor = self.__conn.cursor()
+            cursor.execute(self.__sql)
+            self.__conn.commit()
+        except Exception as e:
+            print(e)
+        
+    def getresult(self):
+        try:
+            cursor = self.__conn.cursor()
+            cursor.execute(self.__select)
+            result = cursor.fetchall()
+            return cursor.fetchall()
+        except Exception as e:
+            print(e)
+
+    def __exit__():
+        self.__conn.close()
